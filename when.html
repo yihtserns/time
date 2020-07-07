@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>When is it?</title>
+    </head>
+
+    <body>
+        <div id="view"></div>
+    </body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+    <script>
+        const $view = $('#view');
+        const queries = new URLSearchParams(window.location.search);
+        const dateTimeString = queries.get('is') || '';
+        console.log(dateTimeString);
+
+        if (dateTimeString === '') {
+            const now = moment();
+
+            document.title = 'When is now?';
+            $view.text(now.local());
+        } else {
+            const dateTime = moment(dateTimeString, moment.ISO_8601, true);
+
+            if (dateTime.isValid()) {
+                document.title = `When is ${dateTime.utc()}`;
+                $view.text(`${dateTime.local()} (${dateTime.fromNow()})`);
+            } else {
+                $view.text(`Invalid ISO-8601 format: ${dateTimeString}`)
+            }
+        }
+    </script>
+</html>
