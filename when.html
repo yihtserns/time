@@ -13,7 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
     <script>
         const $view = $('#view');
-        const queries = new URLSearchParams(window.location.search);
+        const queries = new URLSearchParams(window.location.search.replace('+', '%2B'));
         const dateTimeString = queries.get('is') || '';
         console.log(dateTimeString);
 
