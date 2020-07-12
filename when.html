@@ -6,13 +6,20 @@
     </head>
 
     <body>
+        <h2>Local</h2>
         <div id="view"></div>
+        <p>
+            <input id="date" type="date" style="display:none"/>
+            <input id="time" type="time" style="display:none"/>
+        </p>
     </body>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
     <script>
         const $view = $('#view');
+        const $date = $('#date');
+        const $time = $('#time');
         const queries = new URLSearchParams(window.location.search.replace('+', '%2B'));
         const dateTimeString = queries.get('is') || '';
 
@@ -28,7 +35,11 @@
 
             if (dateTime.isValid()) {
                 document.title = `When is ${dateTimeUtc}`;
+
                 $view.text(`${dateTimeLocal} (${dateTimeLocal.fromNow()})`);
+
+                $date.val(dateTimeLocal.format(moment.HTML5_FMT.DATE)).show();
+                $time.val(dateTimeLocal.format(moment.HTML5_FMT.TIME)).show();
             } else {
                 $view.text(`Invalid ISO-8601 format: ${dateTimeString}`)
             }
