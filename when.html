@@ -11,6 +11,7 @@
         <p>
             <input id="date" type="date" style="display:none"/>
             <input id="time" type="time" style="display:none"/>
+            <button id="go">Go</button>
         </p>
     </body>
 
@@ -20,14 +21,26 @@
         const $view = $('#view');
         const $date = $('#date');
         const $time = $('#time');
+        const $go = $('#go');
         const queries = new URLSearchParams(window.location.search.replace('+', '%2B'));
         const dateTimeString = queries.get('is') || '';
+
+        $go.click(() => {
+            if ($date.val() !== '' && $time.val() !== '') {
+                const newDateTime = moment(`${$date.val()}T${$time.val()}`);
+
+                window.location.href = `?is=${newDateTime.format()}`;
+            }
+        });
 
         if (dateTimeString === '') {
             const now = moment();
 
             document.title = 'When is now?';
+
             $view.text(now.local());
+            $date.val(now.format(moment.HTML5_FMT.DATE)).show();
+            $time.val(now.format(moment.HTML5_FMT.TIME)).show();
         } else {
             const dateTime = moment(dateTimeString, moment.ISO_8601, true);
             const dateTimeLocal = dateTime.clone().local();
@@ -37,7 +50,6 @@
                 document.title = `When is ${dateTimeUtc}`;
 
                 $view.text(`${dateTimeLocal} (${dateTimeLocal.fromNow()})`);
-
                 $date.val(dateTimeLocal.format(moment.HTML5_FMT.DATE)).show();
                 $time.val(dateTimeLocal.format(moment.HTML5_FMT.TIME)).show();
             } else {
