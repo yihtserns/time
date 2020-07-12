@@ -23,10 +23,12 @@
             $view.text(now.local());
         } else {
             const dateTime = moment(dateTimeString, moment.ISO_8601, true);
+            const dateTimeLocal = dateTime.clone().local();
+            const dateTimeUtc = dateTime.clone().utc();
 
             if (dateTime.isValid()) {
-                document.title = `When is ${dateTime.utc()}`;
-                $view.text(`${dateTime.local()} (${dateTime.fromNow()})`);
+                document.title = `When is ${dateTimeUtc}`;
+                $view.text(`${dateTimeLocal} (${dateTimeLocal.fromNow()})`);
             } else {
                 $view.text(`Invalid ISO-8601 format: ${dateTimeString}`)
             }
