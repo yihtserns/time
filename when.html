@@ -15,7 +15,6 @@
         const $view = $('#view');
         const queries = new URLSearchParams(window.location.search.replace('+', '%2B'));
         const dateTimeString = queries.get('is') || '';
-        console.log(dateTimeString);
 
         if (dateTimeString === '') {
             const now = moment();
