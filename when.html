@@ -13,6 +13,8 @@
             <input id="time" type="time" style="display:none"/>
             <button id="go">Go</button>
         </p>
+        <h2>UTC</h2>
+        <div id="view-utc"></div>
     </body>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
@@ -22,6 +24,9 @@
         const $date = $('#date');
         const $time = $('#time');
         const $go = $('#go');
+
+        const $viewUtc = $('#view-utc');
+
         const queries = new URLSearchParams(window.location.search.replace('+', '%2B'));
         const dateTimeString = queries.get('is') || '';
 
@@ -47,11 +52,13 @@
             const dateTimeUtc = dateTime.clone().utc();
 
             if (dateTime.isValid()) {
-                document.title = `When is ${dateTimeUtc}`;
+                document.title = `When is ${dateTimeString}`;
 
                 $view.text(`${dateTimeLocal} (${dateTimeLocal.fromNow()})`);
                 $date.val(dateTimeLocal.format(moment.HTML5_FMT.DATE)).show();
                 $time.val(dateTimeLocal.format(moment.HTML5_FMT.TIME)).show();
+
+                $viewUtc.text(`${dateTimeUtc} (${dateTimeUtc.fromNow()})`);
             } else {
                 $view.text(`Invalid ISO-8601 format: ${dateTimeString}`)
             }
