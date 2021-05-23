@@ -38,30 +38,20 @@
             }
         });
 
-        if (dateTimeString === '') {
-            const now = moment();
+        const dateTime = dateTimeString === '' ? moment() : moment(dateTimeString, moment.ISO_8601, true);
+        const dateTimeLocal = dateTime.clone().local();
+        const dateTimeUtc = dateTime.clone().utc();
 
-            document.title = 'When is now?';
+        if (dateTime.isValid()) {
+            document.title = `When is ${dateTimeString}`;
 
-            $view.text(now.local());
-            $date.val(now.format(moment.HTML5_FMT.DATE)).show();
-            $time.val(now.format(moment.HTML5_FMT.TIME)).show();
+            $view.text(`${dateTimeLocal} (${dateTimeLocal.fromNow()})`);
+            $date.val(dateTimeLocal.format(moment.HTML5_FMT.DATE)).show();
+            $time.val(dateTimeLocal.format(moment.HTML5_FMT.TIME)).show();
+
+            $viewUtc.text(`${dateTimeUtc} (${dateTimeUtc.fromNow()})`);
         } else {
-            const dateTime = moment(dateTimeString, moment.ISO_8601, true);
-            const dateTimeLocal = dateTime.clone().local();
-            const dateTimeUtc = dateTime.clone().utc();
-
-            if (dateTime.isValid()) {
-                document.title = `When is ${dateTimeString}`;
-
-                $view.text(`${dateTimeLocal} (${dateTimeLocal.fromNow()})`);
-                $date.val(dateTimeLocal.format(moment.HTML5_FMT.DATE)).show();
-                $time.val(dateTimeLocal.format(moment.HTML5_FMT.TIME)).show();
-
-                $viewUtc.text(`${dateTimeUtc} (${dateTimeUtc.fromNow()})`);
-            } else {
-                $view.text(`Invalid ISO-8601 format: ${dateTimeString}`)
-            }
+            $view.text(`Invalid ISO-8601 format: ${dateTimeString}`)
         }
     </script>
 </html>
